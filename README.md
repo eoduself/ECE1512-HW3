@@ -15,7 +15,7 @@ This contains the four augmentation methods: word-level / character-level / tran
 (2) Character-level: Four different character augmentations can be considered where you can change the amount of augmentation with aug_char_p in function. <br />
 (3) Translation: Now, it is based on De -> En -> Fr. Please use the sample_example_de.npy in INPUT_NAME of config for sample run. <br />
 (4) Back-Translation: Now, it is based on Fr -> En -> Fr. <br />
-**prerequisites** <br />
+**Prerequisites** <br />
 Word-level: nlpaug-1.1.7/ nltk: averaged_perceptron_tagger / nltk: wordnet / nltk: omw <br />
 *https://www.nltk.org/nltk_data/* <br />
 Character-level: nlpaug-1.1.7 <br />
@@ -42,7 +42,7 @@ This is for changing the text into embedding before applying in the GAN model. T
 (1) FastText-GAN: In this model, synthetic data is generated for each single word and thus, normalization task is applied. The process is as follows: Remove stop words -> Remove numbers -> Remove punctuation -> Split data according to whitespace. Then, pre-trained FastText is used to generate the embedding for each single word where the default size is 300. <br />
 (2) BERT-GAN: In this model, synthetic data is generated for each sentence. To get the embedding of each sentence, I average the second to last hidden layer of each token of sentence, and also average the tokens in a sentence. Finally, this gives 768 hidden units for each sentence. <br />
 (3) BART-GAN: In this model, synthetic data is generated for each sentence. I only consider the sentence less than 7 tokens since most sentences satisfy this condition. Here, each data consists of 768 x 6 since each token has 768 hidden units from encoder of BART and occupies each dimension. <br /> 
-**prerequisites** <br />
+**Prerequisites** <br />
 FastText-GAN: fasttext / stop-words-2018.7.23.tar/ pretrained-model from *https://fasttext.cc/docs/en/crawl-vectors.html* <br />
 BERT-GAN: pretrained-model from *https://github.com/google-research/bert/blob/master/multilingual.md* <br />
 BART-GAN: recent transformer (ex.4.12.5) / pretrained-model from *https://github.com/moussaKam/BARThez* <br />
