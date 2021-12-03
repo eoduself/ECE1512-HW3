@@ -10,11 +10,14 @@ There are five parameters in this file. <br />
 
 ## 2. conventional_aug.py
 This contains the four augmentation methods: word-level / character-level / translation / back-translation. I add the Prerequisites in each method but you can also check them at below. **If you don’t want to use some approaches, please eliminate those import parts.** It receives the input text file (npy) and generate the output text file (npy). You can use the sample_example.npy in the bucket for sample run. <br />
+<br />
 **To run the code:** python conventional_aug.py <br />
+<br />
 (1) Word-level: For lexical-based, it is basically finding a synonym from WordNet and for spelling-based, it is changing some characters for synthesizing. For both methods, you can change the amount of augmentation with aug_p in function. <br />
 (2) Character-level: Four different character augmentations can be considered where you can change the amount of augmentation with aug_char_p in function. <br />
 (3) Translation: Now, it is based on De -> En -> Fr. Please use the sample_example_de.npy in INPUT_NAME of config for sample run. <br />
 (4) Back-Translation: Now, it is based on Fr -> En -> Fr. <br />
+<br />
 **Prerequisites** <br />
 Word-level: nlpaug-1.1.7/ nltk: averaged_perceptron_tagger / nltk: wordnet / nltk: omw <br />
 *https://www.nltk.org/nltk_data/* <br />
@@ -38,10 +41,13 @@ There are ten parameters in this file. <br />
 
 ## 4. pre_processing_GAN.py 
 This is for changing the text into embedding before applying in the GAN model. Three methods are considered: FastText-GAN / BERT-GAN / BART-GAN. **If you don’t want to use some approaches, please eliminate those import parts.** It receives the text file (npy) and generate the embedding file (npz) with its original text. You can use the sample_example_GAN.npy in the bucket for sample run. <br />
+<br />
 **To run the code:** python pre_processing_GAN.py <br />
+<br />
 (1) FastText-GAN: In this model, synthetic data is generated for each single word and thus, normalization task is applied. The process is as follows: Remove stop words -> Remove numbers -> Remove punctuation -> Split data according to whitespace. Then, pre-trained FastText is used to generate the embedding for each single word where the default size is 300. <br />
 (2) BERT-GAN: In this model, synthetic data is generated for each sentence. To get the embedding of each sentence, I average the second to last hidden layer of each token of sentence, and also average the tokens in a sentence. Finally, this gives 768 hidden units for each sentence. <br />
 (3) BART-GAN: In this model, synthetic data is generated for each sentence. I only consider the sentence less than 7 tokens since most sentences satisfy this condition. Here, each data consists of 768 x 6 since each token has 768 hidden units from encoder of BART and occupies each dimension. <br /> 
+<br />
 **Prerequisites** <br />
 FastText-GAN: fasttext / stop-words-2018.7.23.tar/ pretrained-model from *https://fasttext.cc/docs/en/crawl-vectors.html* <br />
 BERT-GAN: pretrained-model from *https://github.com/google-research/bert/blob/master/multilingual.md* <br />
@@ -50,10 +56,13 @@ BART-GAN: recent transformer (ex.4.12.5) / pretrained-model from *https://github
 ## 5. GAN_model.py
 This is for training the GAN model and generate the synthetic data at last. Three methods are considered: FastText-GAN / BERT-GAN / BART-GAN. **If you don’t want to use some approaches, please eliminate those import parts.** It receives the embedding file (npz) and generates the synthetic text file for each original text (npy). Output file has dictionary type (i.e. original text: synthetic text1, synthetic text2 …). You need to run pre_processing_GAN.py first since GAN needs the embedding of original texts.<br />
 Generator in FastText is slightly different from BERT and BART since the size of data is different (300 vs 768). Discriminator is same for all approaches. Training checkpoints are saved and thus, you can call the model later. After finishing the GAN training, the loss function is saved and different methods are used to generate synthetic data in each GAN method. For reference, the sample example is not enough for getting proper synthetic data (in this case, some original text does not have synthetic data) but you can see how the code works. The time complexity of code can be decreased if we split the GAN training and generation of synthetic data since the latter one can be done parallel. <br />
+<br />
 **To run the code:** python GAN_model.py <br />
+<br />
 (1) FastText-GAN: Embedding of original text with Gaussian noise is applied in Generator to produce the synthetic embedding. Then, cosine similarity between synthetic embedding and embeddings in dictionary of pre-trained FastText is applied to find the most similar words. Finally, additional similarity matching between selected words from dictionary and original word is done for finding most proper synthetic word. <br />
 (2) BERT-GAN: Embedding of original text with Gaussian noise is applied in Generator to produce the synthetic embedding. Then, cosine similarity between synthetic embedding and embeddings from dictionary is applied to find the most similar sentences. The dictionary comes from translation of other language (the example comes from German).  <br />
 (3) BART-GAN: Embedding of original text with Gaussian noise is applied in Generator to produce the synthetic embedding. Then, original and synthetic embeddings are averaged. In each dimension, cosine similarity between synthetic embedding and embeddings from dictionary is applied. Finally, decoder in BART is applied to make synthetic data.<br />
+<br />
 **Prerequisites are same as pre_processing_GAN.py**<br />
 
 
