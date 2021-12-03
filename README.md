@@ -1,12 +1,12 @@
 There are five py files where **config.py / conventional_aug.py** is for **conventional augmentations** and **config_GAN.py / GAN_model.py / pre_processing_GAN.py** is for **GAN part**. In addition, I shared the sample data (French text) for running those codes in *s3://bluetrain-eu-workspaces/dyhwang/CR_data*. 
 
 ## 1. config.py
-There are five parameters in this file. 
-(1) INPUT_NAME: It is for original text data. Now, it can receive npy file.
-(2) AUG_METHOD: It is for choosing augmentation methods. There are four methods: word-level / character-level / translation / back-translation.
-(3) WRD_SPECIFIC: It is for selecting lexical or spelling-based augmentation in word-level. It works when AUG_METHOD=’word’.
-(4) CHR_SPECIFIC: It is for choosing insert, substitute, swap or delete method in character-level. It works when AUG_METHOD=’character’. 
-(5) OUTPUT_NAME: It denotes the name of output file which contains the synthetic data.
+There are five parameters in this file. <br />
+(1) INPUT_NAME: It is for original text data. Now, it can receive npy file.<br />
+(2) AUG_METHOD: It is for choosing augmentation methods. There are four methods: word-level / character-level / translation / back-translation.<br />
+(3) WRD_SPECIFIC: It is for selecting lexical or spelling-based augmentation in word-level. It works when AUG_METHOD=’word’.<br />
+(4) CHR_SPECIFIC: It is for choosing insert, substitute, swap or delete method in character-level. It works when AUG_METHOD=’character’. <br />
+(5) OUTPUT_NAME: It denotes the name of output file which contains the synthetic data.<br />
 
 ## 2. conventional_aug.py
 This contains the four augmentation methods: word-level / character-level / translation / back-translation. I add the Prerequisites in each method but you can also check them at below. **If you don’t want to use some approaches, please eliminate those import parts.** It receives the input text file (npy) and generate the output text file (npy). You can use the sample_example.npy in the bucket for sample run. 
